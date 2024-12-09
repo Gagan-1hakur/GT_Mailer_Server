@@ -37,7 +37,7 @@ export const signUp = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: role || "member", // Default role if not provided
+      role: role || "admin", // Default role if not provided
     });
 
     // Save the user to the database

@@ -33,7 +33,7 @@ connectToDatabase();
 
 // Routes
 app.use("/contact", contactRouter); // Contact API routes
-app.use("/user", userRouter); // User API routes (e.g., signup, signin)
+app.use("/api/user", userRouter); // User API routes (e.g., signup, signin)
 app.use("/templates", templateRouter); // Templates API routes
 
 // Default route for invalid endpoints
