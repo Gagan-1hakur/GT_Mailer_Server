@@ -1,9 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import cors from "cors"; // Import CORS middleware
+import cors from "cors";
 import contactRouter from "./modules/contact/contactRoutes.js";
-import userRouter from "./modules/user/userRoutes.js"; // Assuming user routes are needed
+import userRouter from "./modules/user/userRoutes.js";
+import templateRouter from "./modules/templates/templateRoutes.js"; // Import template routes
 
 dotenv.config(); // Load environment variables
 
@@ -33,6 +34,7 @@ connectToDatabase();
 // Routes
 app.use("/contact", contactRouter); // Contact API routes
 app.use("/user", userRouter); // User API routes (e.g., signup, signin)
+app.use("/templates", templateRouter); // Templates API routes
 
 // Default route for invalid endpoints
 app.use((req, res) => {
