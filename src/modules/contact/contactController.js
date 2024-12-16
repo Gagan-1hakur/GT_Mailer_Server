@@ -124,3 +124,38 @@ export const getGroups = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error." });
   }
 };
+
+export const getContactsByGroup = async (req, res) => {
+  console.log(req.query);
+  const { groupName } = req.query; // Get the group name from the query parameter
+  try {
+    if (!groupName) {
+      return res.status(400).json({
+        success: false,
+        message: "Group name is required",
+      });
+    }
+
+    // Find contacts with the specified group
+    const contacts = await Contact.find({ group: groupName });
+
+    if (!contacts.length) {
+      return res.status(404).json({
+        success: false,
+        message: `No contacts found for group: ${groupName}`,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: contacts,
+    });
+  } catch (error) {
+    console.error("Error fetching contacts by group:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch contacts",
+      error: error.message,
+    });
+  }
+};
