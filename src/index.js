@@ -5,6 +5,7 @@ import cors from "cors";
 import contactRouter from "./modules/contact/contactRoutes.js";
 import userRouter from "./modules/user/userRoutes.js";
 import templateRouter from "./modules/templates/templateRoutes.js"; // Import template routes
+import campaignRouter from "./modules/campaign/campaignRoutes.js";
 
 dotenv.config(); // Load environment variables
 
@@ -35,6 +36,7 @@ connectToDatabase();
 app.use("/contact", contactRouter); // Contact API routes
 app.use("/api/user", userRouter); // User API routes (e.g., signup, signin)
 app.use("/templates", templateRouter); // Templates API routes
+app.use("/campaign", campaignRouter);
 
 // Default route for invalid endpoints
 app.use((req, res) => {
