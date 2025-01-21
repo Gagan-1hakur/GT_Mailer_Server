@@ -14,8 +14,10 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.0",
+    "mailgun.js": "^11.1.0",
     "mongoose": "^8.8.2",
     "nodemailer": "^6.9.16",
+    "nodemailer-mailgun-transport": "^2.1.5",
     "nodemon": "^3.1.7"
   }
 }

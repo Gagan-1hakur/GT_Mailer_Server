@@ -1,14 +1,19 @@
-// import { sendMailFromAWS } from "../../utils";
-
 import nodemailer from "nodemailer";
-import { SendRawEmailCommand } from "@aws-sdk/client-ses";
-import ses from "../../config/aws.js";
+import mailgunTransport from "nodemailer-mailgun-transport";
 
-const sendMailFromAWS = async (emailOptions, batchNo) => {
-  const transporter = nodemailer.createTransport({
-    SES: { ses, aws: { SendRawEmailCommand } }, // No need for SendRawEmailCommand here
-  });
+// Mailgun configuration
+const mailgunOptions = {
+  auth: {
+    api_key: "320ca93a78df04f8735b1058c2b5583b-9c3f0c68-543f8512", // Replace with your Mailgun API key
+    domain: "info.pb77mailer.com", // Replace with your Mailgun domain
+  },
+};
 
+const mailgunTransporter = nodemailer.createTransport(
+  mailgunTransport(mailgunOptions)
+);
+
+const sendMailFromMailgun = async (emailOptions, batchNo) => {
   const Options = {
     ...emailOptions,
     replyTo: emailOptions.replyTo,
@@ -17,7 +22,7 @@ const sendMailFromAWS = async (emailOptions, batchNo) => {
   let mail = null;
 
   try {
-    mail = await transporter.sendMail(Options);
+    mail = await mailgunTransporter.sendMail(Options);
     console.log("Email sent successfully:", mail.messageId);
   } catch (error) {
     console.error("Error sending email:", error.message);
@@ -28,8 +33,8 @@ const sendMailFromAWS = async (emailOptions, batchNo) => {
 export const sendMail = async (req, res) => {
   console.log("sendmail");
   try {
-    await sendMailFromAWS({
-      from: "no-reply@pb77mailer.com",
+    await sendMailFromMailgun({
+      from: "mailgun@info.pb77mailer.com", // Replace with your Mailgun-verified sender email
       to: "gtmailer.dev@gmail.com",
       subject: "Test mail",
       html: "<h1>Test mail</h1>",
