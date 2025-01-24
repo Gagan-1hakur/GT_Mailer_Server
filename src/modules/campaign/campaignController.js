@@ -34,7 +34,7 @@ export const sendMail = async (req, res) => {
   console.log("sendmail");
   try {
     await sendMailFromMailgun({
-      from: "mailgun@info.pb77mailer.com", // Replace with your Mailgun-verified sender email
+      from: "noreply@info.pb77mailer.com", // Replace with your Mailgun-verified sender email
       to: "gtmailer.dev@gmail.com",
       subject: "Test mail",
       html: "<h1>Test mail</h1>",
