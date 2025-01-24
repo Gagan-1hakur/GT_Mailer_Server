@@ -1,6 +1,6 @@
-import { Router } from "express";
-import { signUp } from "./signUpController.js";
-import { signIn } from "./signInController.js";
+const { Router } = require("express");
+const { signUp } = require("./signUpController.js");
+const { signIn } = require("./signInController.js");
 
 const userRouter = Router();
 
@@ -8,4 +8,4 @@ const userRouter = Router();
 userRouter.post("/signup", signUp);
 userRouter.post("/signin", signIn);
 
-export default userRouter;
+module.exports = userRouter;

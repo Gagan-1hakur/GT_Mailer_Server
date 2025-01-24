@@ -1,11 +1,12 @@
-import express from "express";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-import cors from "cors";
-import contactRouter from "./modules/contact/contactRoutes.js";
-import userRouter from "./modules/user/userRoutes.js";
-import templateRouter from "./modules/templates/templateRoutes.js"; // Import template routes
-import campaignRouter from "./modules/campaign/campaignRoutes.js";
+const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const contactRouter = require("./modules/contact/contactRoutes.js");
+const userRouter = require("./modules/user/userRoutes.js");
+const templateRouter = require("./modules/templates/templateRoutes.js"); // const template routes
+const campaignRouter = require("./modules/campaign/campaignRoutes.js");
+const groupRouter = require("./modules/groups/groupsRoutes.js");
 
 dotenv.config(); // Load environment variables
 
@@ -37,6 +38,7 @@ app.use("/contact", contactRouter); // Contact API routes
 app.use("/api/user", userRouter); // User API routes (e.g., signup, signin)
 app.use("/templates", templateRouter); // Templates API routes
 app.use("/campaign", campaignRouter);
+app.use("/groups", groupRouter); // Groups API routes
 
 // Default route for invalid endpoints
 app.use((req, res) => {

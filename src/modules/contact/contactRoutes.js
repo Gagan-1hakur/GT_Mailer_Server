@@ -1,12 +1,12 @@
-import { Router } from "express";
-import {
+const { Router } = require("express");
+const {
   addContact,
   getContacts,
   editContact,
   deleteContact,
   getGroups,
   getContactsByGroup,
-} from "./contactController.js";
+} = require("./contactController.js");
 
 const contactRouter = Router();
 
@@ -17,4 +17,4 @@ contactRouter.delete("/delete/:id", deleteContact); // Delete a contact by ID
 contactRouter.get("/groups", getGroups); // Get unique groups
 contactRouter.get("/contacts-by-group", getContactsByGroup); // Get unique groups
 
-export default contactRouter;
+module.exports = contactRouter;

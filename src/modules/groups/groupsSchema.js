@@ -1,20 +1,17 @@
 const mongoose = require("mongoose");
 
-const TemplateSchema = mongoose.model(
-  "Template",
+const GroupSchema = mongoose.model(
+  "Group",
   new mongoose.Schema(
     {
       name: {
         type: String,
         required: true,
-      },
-      content: {
-        type: String,
-        required: true,
+        unique: true,
       },
     },
     { timestamps: true }
   )
 );
 
-module.exports = { TemplateSchema };
+module.exports = GroupSchema;

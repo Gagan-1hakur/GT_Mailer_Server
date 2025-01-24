@@ -1,27 +1,24 @@
-import Contact from "./contactSchema.js";
+const Contact = require("./contactSchema.js");
 
 // Add a new contact
-export const addContact = async (req, res) => {
+const addContact = async (req, res) => {
+  console.log(req.body);
   try {
     const { firstName, lastName, email, mobile, group } = req.body;
 
-    // Validate required fields
     if (!email || !group) {
       return res.status(400).json({ message: "Email and Group are required." });
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return res.status(400).json({ message: "Invalid email format." });
     }
 
-    // Validate mobile format (if provided)
     if (mobile && (!/^\d{10}$/.test(mobile) || mobile.length !== 10)) {
       return res.status(400).json({ message: "Invalid mobile number." });
     }
 
-    // Check for duplicate email
     const existingContactByEmail = await Contact.findOne({ email });
     if (existingContactByEmail) {
       return res
@@ -29,7 +26,6 @@ export const addContact = async (req, res) => {
         .json({ message: `Email '${email}' already exists.` });
     }
 
-    // Check for duplicate mobile (if provided)
     if (mobile) {
       const existingContactByMobile = await Contact.findOne({ mobile });
       if (existingContactByMobile) {
@@ -60,7 +56,7 @@ export const addContact = async (req, res) => {
 };
 
 // Fetch all contacts
-export const getContacts = async (req, res) => {
+const getContacts = async (req, res) => {
   try {
     const contacts = await Contact.find().sort({ creationDate: -1 });
     res.status(200).json({ contacts });
@@ -71,7 +67,7 @@ export const getContacts = async (req, res) => {
 };
 
 // Edit a contact
-export const editContact = async (req, res) => {
+const editContact = async (req, res) => {
   try {
     const { id } = req.params;
     const { firstName, lastName, email, mobile, group } = req.body;
@@ -97,7 +93,7 @@ export const editContact = async (req, res) => {
 };
 
 // Delete a contact
-export const deleteContact = async (req, res) => {
+const deleteContact = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -115,7 +111,7 @@ export const deleteContact = async (req, res) => {
 };
 
 // Fetch unique groups
-export const getGroups = async (req, res) => {
+const getGroups = async (req, res) => {
   try {
     const groups = await Contact.distinct("group");
     res.status(200).json({ groups });
@@ -125,7 +121,7 @@ export const getGroups = async (req, res) => {
   }
 };
 
-export const getContactsByGroup = async (req, res) => {
+const getContactsByGroup = async (req, res) => {
   console.log(req.query);
   const { groupName } = req.query; // Get the group name from the query parameter
   try {
@@ -158,4 +154,13 @@ export const getContactsByGroup = async (req, res) => {
       error: error.message,
     });
   }
+};
+
+module.exports = {
+  addContact,
+  getContacts,
+  editContact,
+  deleteContact,
+  getGroups,
+  getContactsByGroup,
 };

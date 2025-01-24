@@ -1,7 +1,7 @@
-import UserSchema from "./userSchema.js";
-import bcryptjs from "bcryptjs";
+const UserSchema = require("./userSchema.js");
+const bcryptjs = require("bcryptjs");
 
-export const signUp = async (req, res) => {
+const signUp = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
@@ -50,3 +50,5 @@ export const signUp = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+module.exports = { signUp };

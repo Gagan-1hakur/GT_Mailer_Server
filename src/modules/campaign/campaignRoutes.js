@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { sendMail } from "./campaignController.js";
+const { Router } = require("express");
+const { sendMail } = require("./campaignController.js");
 
 const campaignRouter = Router();
 
 campaignRouter.post("/send-mail", sendMail); // Route to send mail
 
-export default campaignRouter;
+module.exports = campaignRouter;

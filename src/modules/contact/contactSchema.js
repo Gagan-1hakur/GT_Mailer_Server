@@ -1,12 +1,22 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const ContactSchema = new mongoose.Schema({
   firstName: { type: String },
   lastName: { type: String },
   email: { type: String, required: true, unique: true }, // Email is required and unique
   mobile: { type: String, sparse: true }, // Unique only for non-empty values
-  group: { type: String, required: true }, // Group is required
+  group: {
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Group",
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+  },
   creationDate: { type: Date, default: Date.now },
 });
 
-export default mongoose.model("Contact", ContactSchema);
+module.exports = mongoose.model("Contact", ContactSchema);

@@ -1,8 +1,8 @@
-import UserSchema from "./userSchema.js";
-import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken";
+const UserSchema = require("./userSchema.js");
+const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
-export const signIn = async (req, res) => {
+const signIn = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -48,3 +48,5 @@ export const signIn = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+module.exports = { signIn };

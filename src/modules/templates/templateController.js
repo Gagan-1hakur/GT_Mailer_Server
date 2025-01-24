@@ -1,7 +1,7 @@
-import { Template } from "./templateSchema.js";
+const { Template } = require("./templateSchema.js");
 
 // Create a new template
-export const createTemplate = async (req, res) => {
+const createTemplate = async (req, res) => {
   try {
     const { name, content } = req.body;
     if (!name || !content) {
@@ -16,7 +16,7 @@ export const createTemplate = async (req, res) => {
 };
 
 // Get all templates
-export const getAllTemplates = async (req, res) => {
+const getAllTemplates = async (req, res) => {
   try {
     const templates = await Template.find();
     res.status(200).json(templates);
@@ -26,7 +26,7 @@ export const getAllTemplates = async (req, res) => {
 };
 
 // Delete a template
-export const deleteTemplate = async (req, res) => {
+const deleteTemplate = async (req, res) => {
   try {
     const template = await Template.findByIdAndDelete(req.params.id);
     if (!template) {
@@ -37,3 +37,5 @@ export const deleteTemplate = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+module.exports = { createTemplate, getAllTemplates, deleteTemplate };
