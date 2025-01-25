@@ -8,17 +8,15 @@ const CampaignSchema = mongoose.model(
         type: String,
         required: true,
       },
-      group: {
-        id: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Group",
-          required: true,
+      group: [
+        {
+          id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Group",
+            required: true,
+          },
         },
-        name: {
-          type: String,
-          required: true,
-        },
-      },
+      ],
       template: {
         id: {
           type: mongoose.Schema.Types.ObjectId,
