@@ -1,4 +1,4 @@
-const { Template } = require("./templateSchema.js");
+const { TemplateSchema } = require("./templateSchema.js");
 
 // Create a new template
 const createTemplate = async (req, res) => {
@@ -8,7 +8,7 @@ const createTemplate = async (req, res) => {
       return res.status(400).json({ message: "Name and content are required" });
     }
 
-    const newTemplate = await Template.create({ name, content });
+    const newTemplate = await TemplateSchema.create({ name, content });
     res.status(201).json(newTemplate);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -18,7 +18,10 @@ const createTemplate = async (req, res) => {
 // Get all templates
 const getAllTemplates = async (req, res) => {
   try {
-    const templates = await Template.find();
+    if (TemplateSchema == null) {
+      console.log("Yes");
+    }
+    const templates = await TemplateSchema.find();
     res.status(200).json(templates);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -28,7 +31,7 @@ const getAllTemplates = async (req, res) => {
 // Delete a template
 const deleteTemplate = async (req, res) => {
   try {
-    const template = await Template.findByIdAndDelete(req.params.id);
+    const template = await TemplateSchema.findByIdAndDelete(req.params.id);
     if (!template) {
       return res.status(404).json({ message: "Template not found" });
     }

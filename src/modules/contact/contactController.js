@@ -1,4 +1,4 @@
-const Contact = require("./contactSchema.js");
+const { ContactSchema } = require("../contact/contactSchema");
 
 // Add a new contact
 const addContact = async (req, res) => {
@@ -19,7 +19,7 @@ const addContact = async (req, res) => {
       return res.status(400).json({ message: "Invalid mobile number." });
     }
 
-    const existingContactByEmail = await Contact.findOne({ email });
+    const existingContactByEmail = await ContactSchema.findOne({ email });
     if (existingContactByEmail) {
       return res
         .status(400)
@@ -27,7 +27,7 @@ const addContact = async (req, res) => {
     }
 
     if (mobile) {
-      const existingContactByMobile = await Contact.findOne({ mobile });
+      const existingContactByMobile = await ContactSchema.findOne({ mobile });
       if (existingContactByMobile) {
         return res
           .status(400)
@@ -36,7 +36,7 @@ const addContact = async (req, res) => {
     }
 
     // Create a new contact
-    const newContact = new Contact({
+    const newContact = new ContactSchema({
       firstName,
       lastName,
       email,
@@ -58,7 +58,7 @@ const addContact = async (req, res) => {
 // Fetch all contacts
 const getContacts = async (req, res) => {
   try {
-    const contacts = await Contact.find().sort({ creationDate: -1 });
+    const contacts = await ContactSchema.find().sort({ creationDate: -1 });
     res.status(200).json({ contacts });
   } catch (error) {
     console.error("Error fetching contacts:", error.message);
@@ -72,7 +72,7 @@ const editContact = async (req, res) => {
     const { id } = req.params;
     const { firstName, lastName, email, mobile, group } = req.body;
 
-    const updatedContact = await Contact.findByIdAndUpdate(
+    const updatedContact = await ContactSchema.findByIdAndUpdate(
       id,
       { firstName, lastName, email, mobile, group },
       { new: true }
@@ -97,7 +97,7 @@ const deleteContact = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deletedContact = await Contact.findByIdAndDelete(id);
+    const deletedContact = await ContactSchema.findByIdAndDelete(id);
 
     if (!deletedContact) {
       return res.status(404).json({ message: "Contact not found." });
@@ -113,7 +113,7 @@ const deleteContact = async (req, res) => {
 // Fetch unique groups
 const getGroups = async (req, res) => {
   try {
-    const groups = await Contact.distinct("group");
+    const groups = await ContactSchema.distinct("group");
     res.status(200).json({ groups });
   } catch (error) {
     console.error("Error fetching groups:", error.message);
@@ -122,25 +122,16 @@ const getGroups = async (req, res) => {
 };
 
 const getContactsByGroup = async (req, res) => {
-  console.log(req.query);
-  const { groupName } = req.query; // Get the group name from the query parameter
   try {
-    if (!groupName) {
-      return res.status(400).json({
-        success: false,
-        message: "Group name is required",
-      });
+    const { groupId } = req.params; // Get the group name from the query parameter
+    let query;
+
+    if (groupId !== "all") {
+      query = { "group.id": groupId };
     }
 
     // Find contacts with the specified group
-    const contacts = await Contact.find({ group: groupName });
-
-    if (!contacts.length) {
-      return res.status(404).json({
-        success: false,
-        message: `No contacts found for group: ${groupName}`,
-      });
-    }
+    const contacts = await ContactSchema.find(query);
 
     res.status(200).json({
       success: true,
